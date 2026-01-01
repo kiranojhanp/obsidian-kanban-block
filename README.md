@@ -2,8 +2,6 @@
 
 A simple Obsidian plugin that renders todo checkboxes as an interactive kanban board.
 
-![Screenshot](screenshot.png)
-
 ![Demo](demo.webp)
 
 ## Usage
@@ -12,32 +10,43 @@ Create a `todo` code block with checkbox items:
 
 ~~~markdown
 ```todo
-- [ ] Task to do
-- [/] Task in progress
-- [x] Completed task
+- [ ] Touch grass #health
+- [ ] Fix "**one small bug**" (day 3)
+- [ ] Reply to [[That Important Email|that email]] from 2 weeks ago
+- [ ] Read [[Books/Atomic Habits|Atomic Habits]] #someday
+- [/] Organize notes (again) #obsidian
+- [/] Learn `vim` (year 7)
+- [x] Install *another* Obsidian plugin
+- [x] Pretend to understand [[regex]]
+- [x] Add task to **todo list** #productivity
 ```
 ~~~
 
-The plugin renders this as a 3-column kanban board:
-- **To Do** — `[ ]`
-- **In Progress** — `[/]`
-- **Done** — `[x]`
+This renders as a 3-column kanban board:
+
+![Screenshot](screenshot.png)
+
+### Syntax
+
+- `[ ]` → **To Do**
+- `[/]` → **In Progress**
+- `[x]` → **Done**
 
 ### Features
 
 - Drag and drop between columns
 - Reorder within columns
 - Changes sync back to markdown in real-time
-- Supports wiki links, bold, italic, and other markdown inside tasks
+- Supports wiki links, bold, italic, code, and tags
 - Nested items move with their parent (shown with `+N` badge)
 
 ## Manual Installation
 
 1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/ldomaradzki/obsidian-kanban-block/releases)
-2. Create a folder in your vault: `.obsidian/plugins/kanban-block/`
+2. Create folder: `.obsidian/plugins/kanban-block/`
 3. Copy the downloaded files into that folder
 4. Reload Obsidian
-5. Enable the plugin in Settings → Community Plugins
+5. Enable in Settings → Community Plugins
 
 ## Development
 
