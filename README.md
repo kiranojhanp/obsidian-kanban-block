@@ -31,7 +31,7 @@ The plugin renders this as a 3-column kanban board:
 
 ## Manual Installation
 
-1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/YOUR_USERNAME/obsidian-kanban-block/releases)
+1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/ldomaradzki/obsidian-kanban-block/releases)
 2. Create a folder in your vault: `.obsidian/plugins/kanban-block/`
 3. Copy the downloaded files into that folder
 4. Reload Obsidian
