@@ -11,8 +11,8 @@ export interface KanbanBlockSettings {
 
 export const DEFAULT_SETTINGS: KanbanBlockSettings = {
 	columnNames: {
-		todo: 'To Do',
-		inProgress: 'In Progress',
+		todo: 'To do',
+		inProgress: 'In progress',
 		done: 'Done',
 	},
 };
@@ -29,27 +29,27 @@ export class KanbanBlockSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-		containerEl.createEl('h3', { text: 'Column Names' });
+		new Setting(containerEl).setName('Column names').setHeading();
 
 		new Setting(containerEl)
-			.setName('To Do column')
+			.setName('To do column')
 			.setDesc('Name for the first column ([ ] items)')
 			.addText(text => text
-				.setPlaceholder('To Do')
+				.setPlaceholder('To do')
 				.setValue(this.plugin.settings.columnNames.todo)
 				.onChange(async (value) => {
-					this.plugin.settings.columnNames.todo = value || 'To Do';
+					this.plugin.settings.columnNames.todo = value || 'To do';
 					await this.plugin.saveSettings();
 				}));
 
 		new Setting(containerEl)
-			.setName('In Progress column')
+			.setName('In progress column')
 			.setDesc('Name for the middle column ([/] items)')
 			.addText(text => text
-				.setPlaceholder('In Progress')
+				.setPlaceholder('In progress')
 				.setValue(this.plugin.settings.columnNames.inProgress)
 				.onChange(async (value) => {
-					this.plugin.settings.columnNames.inProgress = value || 'In Progress';
+					this.plugin.settings.columnNames.inProgress = value || 'In progress';
 					await this.plugin.saveSettings();
 				}));
 
