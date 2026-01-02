@@ -7,6 +7,7 @@ export interface KanbanBlockSettings {
 		inProgress: string;
 		done: string;
 	};
+	centerBoard: boolean;
 }
 
 export const DEFAULT_SETTINGS: KanbanBlockSettings = {
@@ -15,6 +16,7 @@ export const DEFAULT_SETTINGS: KanbanBlockSettings = {
 		inProgress: 'In progress',
 		done: 'Done',
 	},
+	centerBoard: false,
 };
 
 export class KanbanBlockSettingTab extends PluginSettingTab {
@@ -61,6 +63,18 @@ export class KanbanBlockSettingTab extends PluginSettingTab {
 				.setValue(this.plugin.settings.columnNames.done)
 				.onChange(async (value) => {
 					this.plugin.settings.columnNames.done = value || 'Done';
+					await this.plugin.saveSettings();
+				}));
+
+		new Setting(containerEl).setName('Layout').setHeading();
+
+		new Setting(containerEl)
+			.setName('Center board')
+			.setDesc('Center the kanban board horizontally')
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.centerBoard)
+				.onChange(async (value) => {
+					this.plugin.settings.centerBoard = value;
 					await this.plugin.saveSettings();
 				}));
 	}

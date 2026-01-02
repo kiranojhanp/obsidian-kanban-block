@@ -33,7 +33,7 @@ export default class KanbanBlockPlugin extends Plugin {
 
 		new KanbanBoard(el, items, ignoredLines, (newMarkdown) => {
 			this.updateSource(ctx, source, newMarkdown);
-		}, this.app, this, ctx.sourcePath, this.settings.columnNames);
+		}, this.app, this, ctx.sourcePath, this.settings.columnNames, this.settings.centerBoard);
 	}
 
 	private updateSource(

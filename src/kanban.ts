@@ -19,6 +19,7 @@ export class KanbanBoard {
 	private component: Component;
 	private sourcePath: string;
 	private columnNames: ColumnNames;
+	private centerBoard: boolean;
 	private draggedItem: TodoItem | null = null;
 	private draggedElement: HTMLElement | null = null;
 
@@ -30,7 +31,8 @@ export class KanbanBoard {
 		app: App,
 		component: Component,
 		sourcePath: string,
-		columnNames: ColumnNames
+		columnNames: ColumnNames,
+		centerBoard: boolean
 	) {
 		this.container = container;
 		this.items = items;
@@ -40,6 +42,7 @@ export class KanbanBoard {
 		this.component = component;
 		this.sourcePath = sourcePath;
 		this.columnNames = columnNames;
+		this.centerBoard = centerBoard;
 		this.render();
 	}
 
@@ -66,7 +69,8 @@ export class KanbanBoard {
 			});
 		}
 
-		const board = this.container.createDiv({ cls: 'kanban-board' });
+		const boardClasses = this.centerBoard ? 'kanban-board kanban-board-centered' : 'kanban-board';
+		const board = this.container.createDiv({ cls: boardClasses });
 		const columns = this.getColumns();
 		for (const column of columns) {
 			this.renderColumn(board, column);
