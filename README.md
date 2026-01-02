@@ -2,7 +2,7 @@
 
 A simple Obsidian plugin that renders todo checkboxes as an interactive kanban board.
 
-[Video of how this works in Obsidian](video.mov)
+![Video](video.gif)
 
 ## Usage
 
