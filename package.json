@@ -1,7 +1,7 @@
 {
 	"name": "obsidian-kanban-block",
 	"version": "1.0.0",
-	"description": "Render todo checkboxes as an interactive kanban board",
+	"description": "Powerful file-based Kanban boards for Obsidian using Dataview",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {

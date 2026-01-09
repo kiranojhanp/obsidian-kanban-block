@@ -1,74 +1,82 @@
-import { Plugin, MarkdownPostProcessorContext, MarkdownView } from 'obsidian';
-import { parseTodoBlock } from './parser';
-import { KanbanBoard } from './kanban';
-import { KanbanBlockSettings, DEFAULT_SETTINGS, KanbanBlockSettingTab } from './settings';
+import { Plugin, MarkdownPostProcessorContext, TFile } from "obsidian";
+import {
+  KanbanBlockSettings,
+  DEFAULT_SETTINGS,
+  KanbanBlockSettingTab,
+} from "./settings";
+import { BoardParser } from "./board/BoardParser";
+import { BoardView } from "./board/BoardView";
+import { DataviewHelper } from "./utils/dataview";
+import { BoardCommands } from "./commands/BoardCommands";
 
 export default class KanbanBlockPlugin extends Plugin {
-	settings: KanbanBlockSettings;
+  settings: KanbanBlockSettings;
+  dataviewHelper: DataviewHelper;
+  boardCommands: BoardCommands;
 
-	async onload() {
-		await this.loadSettings();
+  async onload() {
+    await this.loadSettings();
 
-		this.addSettingTab(new KanbanBlockSettingTab(this.app, this));
+    this.addSettingTab(new KanbanBlockSettingTab(this.app, this));
 
-		this.registerMarkdownCodeBlockProcessor('todo', (source, el, ctx) => {
-			this.processKanbanBlock(source, el, ctx);
-		});
-	}
+    this.dataviewHelper = new DataviewHelper(this.app);
 
-	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-	}
+    // Register commands
+    this.boardCommands = new BoardCommands(this.app, this);
+    this.boardCommands.register();
 
-	async saveSettings() {
-		await this.saveData(this.settings);
-	}
+    // File-based kanban processor
+    this.registerMarkdownPostProcessor(async (el, ctx) => {
+      await this.processKanbanBoard(el, ctx);
+    });
 
-	private processKanbanBlock(
-		source: string,
-		el: HTMLElement,
-		ctx: MarkdownPostProcessorContext
-	): void {
-		const { items, ignoredLines } = parseTodoBlock(source);
+    console.log("Kanban Block Plugin loaded");
+  }
 
-		new KanbanBoard(el, items, ignoredLines, (newMarkdown) => {
-			this.updateSource(ctx, source, newMarkdown);
-		}, this.app, this, ctx.sourcePath, this.settings.columnNames, this.settings.centerBoard);
-	}
+  async loadSettings() {
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+  }
 
-	private updateSource(
-		ctx: MarkdownPostProcessorContext,
-		oldSource: string,
-		newSource: string
-	): void {
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		if (!view) return;
+  async saveSettings() {
+    await this.saveData(this.settings);
+  }
 
-		const editor = view.editor;
-		const content = editor.getValue();
+  /**
+   * Process file-based kanban boards
+   */
+  private async processKanbanBoard(
+    el: HTMLElement,
+    ctx: MarkdownPostProcessorContext
+  ): Promise<void> {
+    // Check if Dataview is required and available
+    if (this.settings.requireDataview && !this.dataviewHelper.isAvailable()) {
+      return; // Silently skip if Dataview not available
+    }
 
-		// Find the code block and replace its content
-		const codeBlockRegex = /```todo\n([\s\S]*?)```/g;
-		let match;
-		let found = false;
+    // Get source file
+    const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
+    if (!(file instanceof TFile)) return;
 
-		while ((match = codeBlockRegex.exec(content)) !== null) {
-			const blockContent = match[1];
-			// Normalize for comparison (trim trailing newline)
-			if (blockContent?.trim() === oldSource.trim()) {
-				const start = editor.offsetToPos(match.index + '```todo\n'.length);
-				const end = editor.offsetToPos(match.index + '```todo\n'.length + (blockContent?.length ?? 0));
+    // Check if file is a board file
+    const cache = this.app.metadataCache.getFileCache(file);
+    if (!BoardParser.isBoardFile(cache)) return;
 
-				// Preserve trailing newline if original had one
-				const replacement = blockContent?.endsWith('\n') ? newSource + '\n' : newSource;
-				editor.replaceRange(replacement, start, end);
-				found = true;
-				break;
-			}
-		}
+    // Parse board config
+    const config = BoardParser.parseBoardConfig(cache!);
+    if (!config) return;
 
-		if (!found) {
-			console.warn('KanbanBlock: Could not find matching code block to update');
-		}
-	}
+    // Create and render board view in the main content area
+    const boardContainer = el.createDiv({ cls: "kb-board-container" });
+
+    const boardView = new BoardView(
+      this.app,
+      this,
+      file,
+      config,
+      boardContainer,
+      ctx
+    );
+
+    await boardView.render();
+  }
 }

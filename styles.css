@@ -1,3 +1,212 @@
+/* ============================================
+   FILE-BASED KANBAN STYLES
+   ============================================ */
+
+/* Board Container */
+.kb-board-wrapper {
+	width: 100%;
+	padding: 1rem;
+	background: var(--background-primary);
+}
+
+.kb-board {
+	display: flex;
+	gap: 1rem;
+	overflow-x: auto;
+	padding-bottom: 1rem;
+}
+
+/* Loading State */
+.kb-loading {
+	text-align: center;
+	padding: 2rem;
+	color: var(--text-muted);
+	font-style: italic;
+}
+
+/* Columns */
+.kb-column {
+	min-width: 280px;
+	max-width: 320px;
+	background: var(--background-secondary);
+	border-radius: 8px;
+	border-top: 3px solid var(--interactive-accent);
+	display: flex;
+	flex-direction: column;
+}
+
+.kb-column-over-limit {
+	border-top-color: var(--color-red);
+}
+
+.kb-column-header {
+	padding: 0.75rem 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.kb-column-title {
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.kb-column-count {
+	background: var(--background-primary);
+	padding: 0.2rem 0.5rem;
+	border-radius: 12px;
+	font-size: 0.8rem;
+	font-weight: 500;
+	color: var(--text-muted);
+}
+
+.kb-column-count.kb-over-limit {
+	background: var(--color-red);
+	color: var(--text-on-accent);
+}
+
+/* Cards Container */
+.kb-column-cards {
+	flex: 1;
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	min-height: 100px;
+}
+
+.kb-column-cards.kb-drag-over {
+	background: var(--background-modifier-hover);
+	border-radius: 4px;
+}
+
+/* Cards */
+.kb-card {
+	background: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	padding: 0.75rem;
+	cursor: pointer;
+	transition: all 0.2s;
+	position: relative;
+}
+
+.kb-card:hover {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	transform: translateY(-2px);
+	border-color: var(--interactive-accent);
+}
+
+.kb-card.kb-dragging {
+	opacity: 0.5;
+}
+
+/* Priority Indicator */
+.kb-priority {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	font-size: 0.8rem;
+}
+
+/* Card Title */
+.kb-card-title {
+	font-weight: 500;
+	font-size: 0.9rem;
+	margin-bottom: 0.5rem;
+	padding-right: 1.5rem;
+	/* Space for priority */
+}
+
+/* Card Metadata */
+.kb-card-meta {
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	font-size: 0.8rem;
+	color: var(--text-muted);
+	margin-bottom: 0.5rem;
+}
+
+.kb-due {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.2rem;
+}
+
+.kb-due.kb-overdue {
+	color: var(--color-red);
+	font-weight: 600;
+}
+
+.kb-assignee {
+	background: var(--background-secondary);
+	padding: 0.1rem 0.4rem;
+	border-radius: 4px;
+}
+
+/* Tags */
+.kb-tags {
+	display: flex;
+	gap: 0.3rem;
+	flex-wrap: wrap;
+}
+
+.kb-tag {
+	background: var(--tag-background);
+	color: var(--tag-color);
+	padding: 0.1rem 0.4rem;
+	border-radius: 4px;
+	font-size: 0.75rem;
+}
+
+.kb-tag-more {
+	background: var(--background-secondary);
+	color: var(--text-muted);
+	font-style: italic;
+}
+
+/* Add Button */
+.kb-add-btn {
+	margin: 0.5rem;
+	padding: 0.5rem;
+	text-align: center;
+	color: var(--text-muted);
+	cursor: pointer;
+	border: 2px dashed var(--background-modifier-border);
+	border-radius: 6px;
+	transition: all 0.2s;
+	font-size: 1.2rem;
+}
+
+.kb-add-btn:hover {
+	color: var(--interactive-accent);
+	border-color: var(--interactive-accent);
+	background: var(--background-secondary);
+}
+
+.kb-board-container {
+	width: 100%;
+}
+
+.kb-error {
+	padding: 1rem;
+	background: var(--background-modifier-error);
+	color: var(--text-error);
+	border-radius: 4px;
+	margin: 1rem 0;
+}
+
+.kb-error ul {
+	margin-top: 0.5rem;
+	margin-bottom: 0;
+}
+
+/* ============================================
+   KEEP EXISTING LEGACY STYLES BELOW
+   ============================================ */
+
 /* Kanban Wrapper */
 .kanban-wrapper {
 	padding: 8px 0;
