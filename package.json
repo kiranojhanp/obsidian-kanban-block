@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-kanban-block",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Powerful file-based Kanban boards for Obsidian using Dataview",
 	"main": "main.js",
 	"type": "module",
